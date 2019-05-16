@@ -29,9 +29,20 @@ Usage
     Options:
       --thedatatank TDT   A the datatank dcat service, default:
                           http://datasets7.antwerpen.be
-      --arcgisportal AGS  A the Arcgis opendata service, default: https://portaal-
-                          stadantwerpen.opendata.arcgis.com
-      --output OUTFILE    The output file, default:
-                          I:\2_05_03_Projecten\Open_Data\dcat\portal2dcat.xml
+      --arcgisportal AGS  A the Arcgis opendata service, default: 
+                          https://portaal-stadantwerpen.opendata.arcgis.com
+      --output OUTFILE    The output file, default: 
+                          dcat.xml
 
     If any option is ommited, the default value will be used. 
+    
+    
+Updating dcat file on github
+----------------------------
+
+Run the script again then commit, then push
+
+    mergePortalTDT.py --output dcat.xml
+    git add dcat.xml
+    git commit -m "updated dcat.xml"
+    git push origin master
