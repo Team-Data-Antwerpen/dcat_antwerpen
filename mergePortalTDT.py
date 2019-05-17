@@ -22,17 +22,19 @@ OUT_PATH = "dcat.xml"
 def main():
     parser = OptionParser(usage='Merge a tht-dcat service and a arcgis opendata portal-jsonld into one dcat-file.')
 
-    parser.add_option( '--thedatatank', dest="TDT", default= TDT_URL , 
+    parser.add_option('-d', '--thedatatank', dest="TDT", default= TDT_URL , 
                          help='A the datatank dcat service, default: ' + TDT_URL )
-    parser.add_option( '--arcgisportal',  dest="AGS", default= AGS_PORT , 
+    parser.add_option('-a', '--arcgisportal',  dest="AGS", default= AGS_PORT , 
                          help='A the Arcgis opendata service, default: ' + AGS_PORT )
-    parser.add_option( '--output',  dest="OUTFILE", default= OUT_PATH , 
+    parser.add_option('-o', '--output',  dest="OUTFILE", default= OUT_PATH , 
                          help='The output file, default: ' + OUT_PATH )
-
-    opts, args  = parser.parse_args()
-
+    parser.add_option('-t', '--type',  dest="RDF_TYPE", default= "xml" , 
+                         help='The output file format like n3 or XML, default: XML' )
+                         
+    (opts, args)  = parser.parse_args()
+    
     try: 
-        mergePortalTDT(opts.AGS, opts.TDT, opts.OUTFILE )
+        mergePortalTDT(opts.AGS, opts.TDT, opts.OUTFILE, opts.RDF_TYPE )
     except Exception as e:
         parser.print_help()
         raise e

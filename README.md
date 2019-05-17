@@ -10,6 +10,8 @@ This is mke specificaly for the city of Antwerp and is only tested with their se
     - Arcgis opendata portal of Antwerp: "https://portaal-stadantwerpen.opendata.arcgis.com"
     - > The resulting dcat will be shared to thsi repo: https://raw.githubusercontent.com/warrieka/dcat_antwerpen/master/dcat.xml
 
+End goal is usage on https://opendata.vlaanderen.be/ .
+    
 Dependencies 
 ------------
 python 2.7+
@@ -23,17 +25,22 @@ https://github.com/RDFLib/rdflib-jsonld
 Usage
 -----
 
-    mergePortalTDT.py --thedatatank <TDT> --arcgisportal <AGS> --output <OUTFILE> 
+    mergePortalTDT.py --thedatatank <TDT> --arcgisportal <AGS> --output <OUTFILE> --type <RDF_TYPE>
 
     Usage: Merge a tht-dcat service and a arcgis opendata portal-jsonld into one dcat-file.
 
     Options:
-      --thedatatank TDT   A the datatank dcat service, default:
-                          http://datasets7.antwerpen.be
-      --arcgisportal AGS  A the Arcgis opendata service, default: 
-                          https://portaal-stadantwerpen.opendata.arcgis.com
-      --output OUTFILE    The output file, default: 
-                          dcat.xml
+      -h, --help            show this help message and exit
+      -d TDT, --thedatatank=TDT
+                            A the datatank dcat service, default:
+                            http://datasets7.antwerpen.be
+      -a AGS, --arcgisportal=AGS
+                            A the Arcgis opendata service, default: https
+                            ://portaal-stadantwerpen.opendata.arcgis.com
+      -o OUTFILE, --output=OUTFILE
+                            The output file, default: dcat.xml
+      -t RDF_TYPE, --type=RDF_TYPE
+                            The output file format like n3 or XML, default: XML
 
     If any option is ommited, the default value will be used. 
     

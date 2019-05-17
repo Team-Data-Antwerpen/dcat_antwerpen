@@ -14,10 +14,10 @@ class distribution:
             self.gx = Graph( namespace_manager = ns(namespaces).nsManager() )   
         else:
             self.gx = graph
-        self.gx.add( (self.s, RDF.type, dcat.Distribution ) ) #subject predicate object
+        self.gx.add( [self.s, RDF.type, dcat.Distribution ] ) #subject predicate object
         #add licence document, just in case, doubles are allowed and wont be in output
-        self.gx.add( (URIRef(AOD_LIC), RDF.type, dc.LicenseDocument ) ) 
-        ####self.gx.add( (URIRef(AOD_LIC), dc.type, Literal("Open data") ) ) 
+        self.gx.add( [URIRef(AOD_LIC), RDF.type, dc.LicenseDocument ] ) 
+        self.gx.add( [URIRef(AOD_LIC), dc.type, Literal("Public domain") ] ) 
         
     def dcat_accessURL(self, accessURL):
         self.accessURL = URIRef(accessURL)

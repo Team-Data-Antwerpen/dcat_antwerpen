@@ -1,7 +1,7 @@
 from datetime import datetime
 from rdflib import Graph, BNode, URIRef,  Literal
 from ns import dcat, dc, RDF
-from config import CONTACT, HOME_URL 
+from config import CONTACT, HOME_URL, AOD_LIC
 
 def obj2dateLiteral(obj, strict=False):
     dateObj = obj
@@ -24,7 +24,7 @@ def findReplaceInGraph( inTriple, rTriple, graph):
     return graph
     
     
-def cleanGraph(graph, fixDates=True, setDefaultContact=True, setDefaultPub=True):
+def cleanGraph(graph, fixDates=True, setDefaultContact=True, setDefaultPub=True, fixLicences=True):
     #do not override input graph
     graphOut = graph
     #list all dataset in graph
@@ -53,5 +53,11 @@ def cleanGraph(graph, fixDates=True, setDefaultContact=True, setDefaultPub=True)
             #add or update publisher, remove old publisher
             graphOut.remove([d, dc.publisher, None])
             graphOut.add([d, dc.publisher, URIRef(HOME_URL)])
+    
+    #license: TODO
+    if fixLicences:  
+       licenses = graph.triples( (None, RDF.type, dc.LicenseDocument ) )
+       for lic in licenses:
+          graphOut.add( [lic[0], dc.type, Literal("Public domain") ] ) 
     
     return graphOut
