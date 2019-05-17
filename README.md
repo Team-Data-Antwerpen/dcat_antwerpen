@@ -8,6 +8,7 @@ See: https://data.vlaanderen.be/doc/applicatieprofiel/DCAT-AP-VL
 This is mke specificaly for the city of Antwerp and is only tested with their services.
     - The Datatank of Antwerp:  "http://datasets7.antwerpen.be"
     - Arcgis opendata portal of Antwerp: "https://portaal-stadantwerpen.opendata.arcgis.com"
+    - > The resulting dcat will be shared to thsi repo: https://raw.githubusercontent.com/warrieka/dcat_antwerpen/master/dcat.xml
 
 Dependencies 
 ------------
@@ -46,3 +47,6 @@ Run the script again then commit, then push
     git add dcat.xml
     git commit -m "updated dcat.xml"
     git push origin master
+
+    
+    

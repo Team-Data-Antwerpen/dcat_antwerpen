@@ -1,6 +1,7 @@
 from datetime import datetime
 from rdflib import Graph, BNode, URIRef,  Literal
-from ns import dcat, dc
+from ns import dcat, dc, RDF
+from config import CONTACT, HOME_URL 
 
 def obj2dateLiteral(obj, strict=False):
     dateObj = obj
@@ -18,22 +19,39 @@ def obj2dateLiteral(obj, strict=False):
     
     
 def findReplaceInGraph( inTriple, rTriple, graph):
-    graph.add( rTriple )
     graph.remove( inTriple )
+    graph.add( rTriple )
     return graph
     
     
-def cleanGraph(graph):
+def cleanGraph(graph, fixDates=True, setDefaultContact=True, setDefaultPub=True):
+    #do not override input graph
+    graphOut = graph
+    #list all dataset in graph
+    ds = [s for s,p,o in graph.triples([None, RDF.type , dcat.Dataset])]
     
     ## clean Dates
-    datePredicats = [dc.issued, dc.modified]
-    gx = []
-    graphOut = graph
-    for dp in datePredicats: 
-        gx += graph.triples([None, dp, None])
-    fixedDates = [( [s,p,o], [s, p, obj2dateLiteral(o)]) for s,p,o in gx]
-    for fix in fixedDates:
-        inTrip, rTrip = fix
-        findReplaceInGraph(inTrip, rTrip, graphOut)
+    if fixDates:
+        datePredicats = [dc.issued, dc.modified]
+        gx = []
+        for dp in datePredicats: 
+            gx += graph.triples([None, dp, None])
+        fixedDates = [( [s,p,o], [s, p, obj2dateLiteral(o)]) for s,p,o in gx]
+        for fix in fixedDates:
+            inTrip, rTrip = fix
+            findReplaceInGraph(inTrip, rTrip, graphOut)
+        
+    #set default contact
+    if setDefaultContact:
+        for d in ds:         
+            #add or update contactPoint, remove old contact
+            graphOut.remove([d, dcat.contactPoint, None])
+            graphOut.add([d, dcat.contactPoint, URIRef(CONTACT)])
+    # set default publisher
+    if setDefaultPub:
+        for d in ds:
+            #add or update publisher, remove old publisher
+            graphOut.remove([d, dc.publisher, None])
+            graphOut.add([d, dc.publisher, URIRef(HOME_URL)])
     
     return graphOut
