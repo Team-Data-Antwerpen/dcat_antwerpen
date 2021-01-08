@@ -9,7 +9,7 @@ namespaces={'dcat': dcat, 'dc': dc, 'foaf': FOAF}
 
 class ns:
     """create Namespaces"""
-    def __init__(self, namespaces={}):
+    def __init__(self, namespaces=namespaces):
         self.namespaces = namespaces 
     
     def nsManager(self):

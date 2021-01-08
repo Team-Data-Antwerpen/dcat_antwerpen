@@ -121,3 +121,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# kw
+uploadtoS3.py 
+dcat_mobiliteit.xml
+mobiliteit.py

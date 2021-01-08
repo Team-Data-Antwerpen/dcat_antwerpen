@@ -39,11 +39,21 @@ def parseDistribution(distList, graph, idfield="downloadURL", title=""):
             d.dcat_mediaType( dist["mediaType"] ) 
         d.dc_license()
 
-def parseDatasets(agsJSON, graph):
+def parseDatasets(agsJSON, graph, tagfilter=None):
     datasets = agsJSON["dataset"]
     dcat_datasets = []
+    filterList = []
+    if tagfilter: 
+        if type(tagfilter) == list: filterList = []
+        if type(tagfilter) == str or type(tagfilter) == unicode: filterList = tagfilter.split(",")
+
     for ds in datasets:
         identifier = ds["identifier"]
+
+        if len(filterList) > 0:
+           if len([ n for n in ds["keyword"] if n in filterList]) == 0: 
+                continue
+
         dcat_datasets.append(identifier)
         
         d = dataset(identifier, graph)
@@ -55,6 +65,9 @@ def parseDatasets(agsJSON, graph):
         d.dc_modified( ds["modified"] ) 
         if "landingPage" in ds: 
             d.dcat_landingPage( ds["landingPage"] ) 
+        if "keyword" in ds: 
+            d.dcat_theme(ds["keyword"])
+        
         d.dcat_contactPoint() 
         d.dc_publisher() 
         d.dc_language() 
@@ -76,18 +89,25 @@ def parseDatasets(agsJSON, graph):
         parseDistribution([i for i in ds["distribution"]  if ("downloadURL" in i and i["downloadURL"] in dist_urls )], graph, "downloadURL", ds["title"])
     return dcat_datasets
     
-def mergePortalTDT(portal=AGS_PORT, tdt=TDT_URL, outpath=OUT_PATH, outtype="xml"):
+def mergePortalTDT(portal=AGS_PORT, tdt=TDT_URL, outpath=OUT_PATH, outtype="xml", tagfilter=None ):
     
-    #make a graph form arcgis-portal json
-    gx = Graph( namespace_manager = ns(namespaces).nsManager() )   
-    dcat_datasets = parseDatasets( portalJSON(portal + "/data.jsonld" ), gx)
-    
-    #merge with the datatank
-    g1 = Graph().parse(tdt  +"/api/dcat" , format="n3" )
+    #header
+    gx = Graph( namespace_manager = ns(namespaces).nsManager() ) 
+    g1 = Graph()
+    #make a graph form the datatank
+    if tdt:
+        g1 = Graph().parse(tdt  +"/api/dcat" , format="n3" )
+
+    #make a graph form arcgis-portal json 
+    dcat_datasets = []
+    if portal: 
+        dcat_datasets = parseDatasets( portalJSON(portal + "/data.jsonld" ), gx, tagfilter)
+
     ## add the new datasets tot catalog
     for dcat_dataset in dcat_datasets:
         g1.add([URIRef(tdt  +"/api/dcat"), dcat.dataset, URIRef(dcat_dataset) ])
-    
+
+    #merge with the datatank
     g2 = cleanGraph( g1 ) + gx
     
     with open( outpath, 'w') as fl:

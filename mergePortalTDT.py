@@ -16,8 +16,9 @@ from optparse import OptionParser
 
 TDT_URL =  "http://datasets7.antwerpen.be"
 AGS_PORT = "https://portaal-stadantwerpen.opendata.arcgis.com"
-OUT_PATH = "dcat.xml" 
-
+OUT_PATH = r"dcat.xml" 
+RDF_TYPE = "xml"
+FILTER = ""
 
 def main():
     parser = OptionParser(usage='Merge a tht-dcat service and a arcgis opendata portal-jsonld into one dcat-file.')
@@ -28,13 +29,15 @@ def main():
                          help='A the Arcgis opendata service, default: ' + AGS_PORT )
     parser.add_option('-o', '--output',  dest="OUTFILE", default= OUT_PATH , 
                          help='The output file, default: ' + OUT_PATH )
-    parser.add_option('-t', '--type',  dest="RDF_TYPE", default= "xml" , 
+    parser.add_option('-t', '--type',  dest="RDF_TYPE", default= RDF_TYPE , 
                          help='The output file format like n3 or XML, default: XML' )
+    parser.add_option('-f', '--filter',  dest="FILTER", default= FILTER , 
+                         help='Filter by one or more keywords, comma separed list.' )
                          
-    (opts, args)  = parser.parse_args()
+    opts = parser.parse_args()[0]
     
     try: 
-        mergePortalTDT(opts.AGS, opts.TDT, opts.OUTFILE, opts.RDF_TYPE )
+        mergePortalTDT(opts.AGS, opts.TDT, opts.OUTFILE, opts.RDF_TYPE, opts.FILTER )
     except Exception as e:
         parser.print_help()
         raise e

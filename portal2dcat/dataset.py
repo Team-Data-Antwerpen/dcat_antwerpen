@@ -50,6 +50,28 @@ class dataset:
         self.contactPoint = URIRef( contactPoint )
         self.gx.add( (self.s, dcat.contactPoint, self.contactPoint ) )
       
+    def dcat_theme(self, keywords=[]):
+        for key in keywords:
+            if key.lower() in ["economie"]:
+                self.theme = URIRef("http://vocab.belgif.be/auth/datatheme/ECON")
+            elif key.lower() in ["cultuur", "sport" ]:
+                self.theme = URIRef("http://vocab.belgif.be/auth/datatheme/CULT")
+            elif key.lower() in ["onderwijs"]:
+                self.theme = URIRef("http://vocab.belgif.be/auth/datatheme/EDUC")
+            elif key.lower() in ["afval", "bodem", "milieu", "groeninventaris"]:
+                self.theme = URIRef("http://vocab.belgif.be/auth/datatheme/ENVI")
+            elif key.lower() in ["publieke diensten"]:
+                self.theme = URIRef("http://vocab.belgif.be/auth/datatheme/GOVE")
+            elif key.lower() in ["zorg"]:
+                self.theme = URIRef("http://vocab.belgif.be/auth/datatheme/HEAL")
+            elif key.lower() in ["grenzen", "structuurplan"]:
+                self.theme = URIRef("http://vocab.belgif.be/auth/datatheme/REGI")
+            elif key.lower() in ["mobiliteit"]:
+                self.theme = URIRef("http://vocab.belgif.be/auth/datatheme/TRAN")   
+            else: 
+                continue
+            self.gx.add( (self.s, dcat.theme, self.theme ) )
+
     def dcat_landingPage(self, landingPage=""):
         self.landingPage = URIRef( landingPage )
         self.gx.add( (self.s, dcat.landingPage, self.landingPage ) )
@@ -68,5 +90,5 @@ class dataset:
             self.distribution.append( URIRef( dist ) )
             self.gx.add( (self.s, dcat.distribution, URIRef(dist) ) )
     
-    def asText(self):
-        return self.gx.serialize(format='n3')
+    def asText(self, format='n3'):
+        return self.gx.serialize(format=format)
