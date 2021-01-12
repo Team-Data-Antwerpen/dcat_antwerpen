@@ -6,7 +6,10 @@ The output file should be compatible with the DCAT-AP VL specifications.
 See: https://data.vlaanderen.be/doc/applicatieprofiel/DCAT-AP-VL
 
 This tool is made specificaly for the city of Antwerp and is only tested with their services.
+<<<<<<< HEAD
 
+=======
+>>>>>>> 941d65b9306eb0b9705df1c8041eef3ac5a0de9b
     - Arcgis opendata portal of Antwerp: "https://portaal-stadantwerpen.opendata.arcgis.com"
     - -> The resulting dcat will be shared to thsi repo: (dcat.xml)[dcat.xml]
 
