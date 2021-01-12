@@ -1,4 +1,4 @@
-Arcgis Portal to DCAt RDF 
+Arcgis Portal to DCAT RDF 
 =========================
 
 Merge a tht-dcat service and a arcgis opendata portal-jsonld into one dcat-file. 
