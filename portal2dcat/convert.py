@@ -4,7 +4,6 @@ from rdflib import Graph,  URIRef
 from distribution import distribution
 from dataset import dataset
 from ns import ns, namespaces, dcat, dc 
-from config import AGS_PORT, TDT_URL, OUT_PATH 
 from utils import cleanGraph
 
 def portalJSON(url):
@@ -89,26 +88,22 @@ def parseDatasets(agsJSON, graph, tagfilter=None):
         parseDistribution([i for i in ds["distribution"]  if ("downloadURL" in i and i["downloadURL"] in dist_urls )], graph, "downloadURL", ds["title"])
     return dcat_datasets
     
-def mergePortalTDT(portal=AGS_PORT, tdt=TDT_URL, outpath=OUT_PATH, outtype="xml", tagfilter=None ):
+def mergePortal(portal, outpath, outtype="xml", tagfilter=None ):
     
-    #header
+    # make a graph 
     gx = Graph( namespace_manager = ns(namespaces).nsManager() ) 
-    g1 = Graph()
-    #make a graph form the datatank
-    if tdt:
-        g1 = Graph().parse(tdt  +"/api/dcat" , format="n3" )
 
-    #make a graph form arcgis-portal json 
+    # get data form arcgis-portal json 
     dcat_datasets = []
     if portal: 
         dcat_datasets = parseDatasets( portalJSON(portal + "/data.jsonld" ), gx, tagfilter)
 
     ## add the new datasets tot catalog
     for dcat_dataset in dcat_datasets:
-        g1.add([URIRef(tdt  +"/api/dcat"), dcat.dataset, URIRef(dcat_dataset) ])
+        gx.add([URIRef("http://datasets7.antwerpen.be/api/dcat"), dcat.dataset, URIRef(dcat_dataset) ])
 
-    #merge with the datatank
-    g2 = cleanGraph( g1 ) + gx
+    #merge
+    g2 = cleanGraph(gx)
     
     with open( outpath, 'w') as fl:
         fl.write( g2.serialize(format=outtype) )

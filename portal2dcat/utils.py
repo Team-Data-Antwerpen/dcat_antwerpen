@@ -7,6 +7,8 @@ def obj2dateLiteral(obj, strict=False):
     dateObj = obj
     if isinstance( obj, (str, unicode) ): 
        try: 
+           dateObj = datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S")
+       except ValueError: 
            dateObj = datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S.%fZ")
        except ValueError: 
            dateObj = datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S+0000")
