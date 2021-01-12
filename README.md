@@ -8,7 +8,7 @@ See: https://data.vlaanderen.be/doc/applicatieprofiel/DCAT-AP-VL
 This tool is made specificaly for the city of Antwerp and is only tested with their services.
 
 - Arcgis opendata portal of Antwerp: "https://portaal-stadantwerpen.opendata.arcgis.com"
-- -> The resulting dcat will be shared to thsi repo: (dcat.xml)[dcat.xml]
+- -> The resulting dcat will be shared to thsi repo: [dcat.xml](dcat.xml)
 
 End goal is usage on https://opendata.vlaanderen.be/ .
     
