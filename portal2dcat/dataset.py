@@ -1,9 +1,9 @@
 from datetime import datetime
 from rdflib import Graph, BNode, URIRef,  Literal
-from rdflib.namespace import RDF, FOAF, Namespace, NamespaceManager
-from ns import ns, namespaces, dcat, dc
-from config import CONTACT, HOME_URL 
-from utils import obj2dateLiteral
+from rdflib.namespace import RDF, FOAF
+from .ns import ns, namespaces, dcat, dc
+from .config import CONTACT, HOME_URL 
+from .utils import obj2dateLiteral
 
 class dataset:
     def __init__(self, subject=None, graph=None):
@@ -15,7 +15,7 @@ class dataset:
         else:
             self.gx = graph
         self.gx.add( (self.s, RDF.type, dcat.Dataset ) ) #subject predicate object
-        #add agend
+        #add agent
         self.gx.add( (URIRef(HOME_URL), RDF.type, FOAF.Agent ) )
         
     def dc_title(self, title="" ):

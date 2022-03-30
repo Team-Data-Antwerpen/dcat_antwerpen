@@ -11,15 +11,14 @@
 #   pip install rdflib
 #   pip install rdflib-jsonld
 
-from portal2dcat import mergePortal
-from portal2dcat.config import AGS_PORT, OUT_PATH
+from .convert import mergePortal
+from .config import AGS_PORT, OUT_PATH
 
 RDF_TYPE = "xml" 
-OUTFILE = OUT_PATH   # change to output filename 
 FILTER = ''
 
-def main():
-    mergePortal(AGS_PORT, OUTFILE, RDF_TYPE, FILTER )
+def main(filter=FILTER, type=RDF_TYPE):
+    mergePortal(AGS_PORT, OUT_PATH, type, filter )
 
 if __name__ == "__main__":
    main()

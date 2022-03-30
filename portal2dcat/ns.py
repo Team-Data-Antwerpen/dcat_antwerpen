@@ -1,4 +1,4 @@
-from rdflib.namespace import RDF, FOAF, Namespace, NamespaceManager
+from rdflib.namespace import FOAF, Namespace, NamespaceManager
 from rdflib import Graph
 
 ## namespaces 

@@ -14,39 +14,26 @@ End goal is usage on https://opendata.vlaanderen.be/ .
     
 Dependencies 
 ------------
-python 2.7+
+python 3.7+
 
-https://rdflib.readthedocs.io/en/stable/index.html
-https://github.com/RDFLib/rdflib-jsonld
+<https://rdflib.readthedocs.io/en/stable/index.html><br>
+<https://nbconvert.readthedocs.io/>
 
     pip install rdflib
-    pip install rdflib-jsonld
+    pip install nbconvert
+
 
 Usage
------
+------
 
-First modify [config.py](portal2dcat/config.py) to your portal, licenc etc. 
+You can use the [jupyternotebook dcat.ipynb](dcat.ipynb) to make the <dcat.xml> file.
 
-    ## URLs
-    AGS_PORT = <YOUR ARCGIS PORTAL: https://<something>.opendata.arcgis.com>
-    AOD_LIC  = <LINK TO YOUR LICENCE>
-    CONTACT  = <YOUR CONTACT-EMAIL>
-    HOME_URL = <YOUR UNIQUE HOMEPAGE>
-    
-    ## defaults
-    OUT_PATH = "dcat.xml"
+Or you can use script from the cmd-line. 
+We also a separate script to upload the output to our s3-cloud storage. 
+This script is not in this repo.
 
-run mergePortal.py to create the dcat.xml.
-    
-Updating dcat file on github
-----------------------------
-
-Run the script again then commit, then push
-
-    mergePortal.py 
-    git add dcat.xml
-    git commit -m "updated dcat.xml"
-    git push origin master
+    python dcat.py
+    python uploadS3.py
 
     
     

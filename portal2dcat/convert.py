@@ -1,14 +1,14 @@
-
-import sys, json, urllib2
+import json
+from urllib.request import urlopen
 from rdflib import Graph,  URIRef
-from distribution import distribution
-from dataset import dataset
-from ns import ns, namespaces, dcat, dc 
-from utils import cleanGraph
+from .distribution import distribution
+from .dataset import dataset
+from .ns import ns, namespaces, dcat
+from .utils import cleanGraph
 
 def portalJSON(url):
     "Get the json-object from arcgis portal"
-    response = urllib2.urlopen(url)
+    response = urlopen(url)
     return json.load(response)   
     
 def parseDistribution(distList, graph, idfield="downloadURL", title=""):
@@ -44,7 +44,7 @@ def parseDatasets(agsJSON, graph, tagfilter=None):
     filterList = []
     if tagfilter: 
         if type(tagfilter) == list: filterList = []
-        if type(tagfilter) == str or type(tagfilter) == unicode: filterList = tagfilter.split(",")
+        if type(tagfilter) == str: filterList = tagfilter.split(",")
 
     for ds in datasets:
         identifier = ds["identifier"]
@@ -94,16 +94,15 @@ def mergePortal(portal, outpath, outtype="xml", tagfilter=None ):
     gx = Graph( namespace_manager = ns(namespaces).nsManager() ) 
 
     # get data form arcgis-portal json 
-    dcat_datasets = []
-    if portal: 
-        dcat_datasets = parseDatasets( portalJSON(portal + "/data.jsonld" ), gx, tagfilter)
+    dcat_datasets = parseDatasets( portalJSON(portal + "/data.jsonld" ), gx, tagfilter)
 
     ## add the new datasets tot catalog
     for dcat_dataset in dcat_datasets:
-        gx.add([URIRef("http://datasets7.antwerpen.be/api/dcat"), dcat.dataset, URIRef(dcat_dataset) ])
+        uri = URIRef(portal + "/data.jsonld")
+        gx.add([uri, dcat.dataset, URIRef(dcat_dataset) ])
 
     #merge
     g2 = cleanGraph(gx)
-    
-    with open( outpath, 'w') as fl:
+
+    with open( outpath, 'w', encoding="utf-8") as fl:
         fl.write( g2.serialize(format=outtype) )

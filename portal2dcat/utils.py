@@ -1,28 +1,31 @@
 from datetime import datetime
-from rdflib import Graph, BNode, URIRef,  Literal
-from ns import dcat, dc, RDF
-from config import CONTACT, HOME_URL, AOD_LIC
+from rdflib import URIRef,  Literal
+from .ns import dcat, dc, RDF
+from .config import CONTACT, HOME_URL
 
 def obj2dateLiteral(obj, strict=False):
     dateObj = obj
-    if isinstance( obj, (str, unicode) ): 
+    if isinstance( obj, str ): 
        try: 
            dateObj = datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S")
        except ValueError: 
-           dateObj = datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S.%fZ")
-       except ValueError: 
-           dateObj = datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S+0000")
+            try: 
+               dateObj = datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S.%fZ")
+            except ValueError: 
+               dateObj = datetime.strptime(obj, "%Y-%m-%dT%H:%M:%S.%f")
        except Exception as e:
             print( "WARNING: Could not convert {} to datetime".format(obj) )
             if strict: raise e
-    elif  isinstance( obj, (int, long, float) ): 
+    elif  isinstance( obj, (int, float) ): 
         dateObj = datetime.fromtimestamp(obj)
     return Literal( dateObj )
     
     
 def findReplaceInGraph( inTriple, rTriple, graph):
-    graph.remove( inTriple )
-    graph.add( rTriple )
+    i = tuple(inTriple)
+    o = tuple(rTriple)
+    graph.remove( i )
+    graph.add( o )
     return graph
     
     

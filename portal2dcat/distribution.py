@@ -1,9 +1,9 @@
 from datetime import datetime
 from rdflib import Graph, BNode, URIRef,  Literal
-from rdflib.namespace import RDF, FOAF, Namespace, NamespaceManager
-from ns import ns, namespaces, dcat, dc
-from config import AOD_LIC
-from utils import obj2dateLiteral
+from rdflib.namespace import RDF
+from .ns import ns, namespaces, dcat, dc
+from .config import AOD_LIC
+from .utils import obj2dateLiteral
 
 class distribution:
     def __init__(self, subject=None, graph=None):
@@ -41,7 +41,7 @@ class distribution:
         
     def dc_issued(self, issued=None ):
         if issued is None: 
-            issued = datetime.now()
+           issued = datetime.now()
         else: 
            issued = obj2dateLiteral( issued )
         self.issued = Literal( issued )
